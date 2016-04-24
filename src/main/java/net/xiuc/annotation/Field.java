@@ -1,4 +1,4 @@
-package annotation;
+package net.xiuc.annotation;
 
 import java.lang.annotation.*;
 
