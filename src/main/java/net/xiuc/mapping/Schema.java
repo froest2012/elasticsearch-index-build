@@ -29,4 +29,12 @@ public class Schema {
     public void setName(String name) {
         this.name = name;
     }
+
+    public List<Table> getTableList() {
+        return tableList;
+    }
+
+    public void setTableList(List<Table> tableList) {
+        this.tableList = tableList;
+    }
 }

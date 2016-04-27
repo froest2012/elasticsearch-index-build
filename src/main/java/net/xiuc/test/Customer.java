@@ -19,4 +19,7 @@ public class Customer {
     @FieldAttr(schema = "saint", table = "saint_contacts", foreign = "customer_id")
     private String contactsName;
 
+    @FieldAttr(schema = "saint", table = "saint_contacts", foreign = "customer_id")
+    private String contactsMobile;
+
 }

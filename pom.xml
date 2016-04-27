@@ -12,6 +12,16 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>com.tqmall.search</groupId>
+                <artifactId>commons-component</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>2.2.0</version>
+            </dependency>
+            <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.14.4</version>
@@ -21,6 +31,14 @@
 
     <!-- 版本引用 -->
     <dependencies>
+        <dependency>
+            <groupId>com.tqmall.search</groupId>
+            <artifactId>commons-component</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

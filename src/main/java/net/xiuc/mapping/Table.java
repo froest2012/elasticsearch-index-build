@@ -1,5 +1,8 @@
 package net.xiuc.mapping;
 
+import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 
 /**
@@ -14,12 +17,25 @@ public class Table {
     private String name;
 
     /**
+     * 如果这个table是主索引,那么这个key不为空,否则这个为空,和foreign值相反
+     */
+    private String key;
+
+    /**
+     * 外键-对应主索引的主键
+     * 如果这个table是从索引,那么这个foreign部位空,否则这个为空,和key值相反
+     */
+    private String foreign;
+
+    /**
      * 数据库表对应的字段列表
      */
-    private List<String> columnList;
+    private List<String> columnList = Lists.newArrayList();
 
-    private Table(String name, List<String> columnList){
+    private Table(String name, String key, String foreign, List<String> columnList){
         this.name = name;
+        this.key = key;
+        this.foreign = foreign;
         this.columnList = columnList;
     }
 
@@ -31,7 +47,11 @@ public class Table {
 
         private String name;
 
-        private List<String> columList;
+        private String key;
+
+        private String foreign;
+
+        private List<String> columList = Lists.newArrayList();
 
         public TableBuilder(String tableName){
             this.name = tableName;
@@ -54,8 +74,18 @@ public class Table {
             return this;
         }
 
+        public void setForeign(String foreign) {
+            if(StringUtils.isEmpty(this.foreign)) {
+                this.foreign = foreign;
+            }
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
         public Table create(){
-            return new Table(this.name, this.columList);
+            return new Table(this.name, this.key, this.foreign, this.columList);
         }
     }
 }
