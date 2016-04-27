@@ -28,19 +28,45 @@ public class Table {
     private String foreign;
 
     /**
+     * 表示这个表的哪些数据是有效的,用于where语句后面做条件
+     */
+    private String valid;
+
+    /**
      * 数据库表对应的字段列表
      */
     private List<String> columnList = Lists.newArrayList();
 
-    private Table(String name, String key, String foreign, List<String> columnList){
+    private Table(String name, String key, String foreign, String valid, List<String> columnList){
         this.name = name;
         this.key = key;
         this.foreign = foreign;
+        this.valid = valid;
         this.columnList = columnList;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public String getForeign() {
+        return foreign;
+    }
+
+    public List<String> getColumnList() {
+        return columnList;
     }
 
     public static TableBuilder buildTable(String tableName){
         return new TableBuilder(tableName);
+    }
+
+    public String getValid() {
+        return valid;
     }
 
     public static class TableBuilder {
@@ -50,6 +76,8 @@ public class Table {
         private String key;
 
         private String foreign;
+
+        private String valid;
 
         private List<String> columList = Lists.newArrayList();
 
@@ -84,8 +112,14 @@ public class Table {
             this.key = key;
         }
 
+        public void setValid(String valid) {
+            if(StringUtils.isEmpty(this.valid)) {
+                this.valid = valid;
+            }
+        }
+
         public Table create(){
-            return new Table(this.name, this.key, this.foreign, this.columList);
+            return new Table(this.name, this.key, this.foreign, this.valid, this.columList);
         }
     }
 }

@@ -16,10 +16,10 @@ public class Customer {
     @FieldAttr
     private String companyName;
 
-    @FieldAttr(schema = "saint", table = "saint_contacts", foreign = "customer_id")
+    @FieldAttr(schema = "saint", table = "saint_contacts", foreign = "customer_id", valid = "is_deleted = 'N'")
     private String contactsName;
 
-    @FieldAttr(schema = "saint", table = "saint_contacts", foreign = "customer_id")
+    @FieldAttr(schema = "saint", table = "saint_contacts")
     private String contactsMobile;
 
 }

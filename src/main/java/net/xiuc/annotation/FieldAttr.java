@@ -50,4 +50,12 @@ public @interface FieldAttr {
      * @return  返回结果
      */
     String foreign() default "";
+
+    /**
+     * 用于main=true或者foreign!=""的时候
+     * 来表示这个表的那种数据是有效的,比如:is_deleted='N', status=1 等等
+     * @return  返回结果
+     */
+    String valid() default "";
+
 }
