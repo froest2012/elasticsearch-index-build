@@ -13,7 +13,11 @@ public enum IndexBuildFactory {
         return INSTANCE;
     }
 
-    public static <T> void indexBuild(Class<T> clazz){
+    public <T> void build(String indexAliasName, Class<T> clazz){
+        //解析clazz, 分析出主从关系以及数据库关系
 
+        //从数据库获取数据并建成doc
+        //创建索引并设置别名
+        //索引管理
     }
 }

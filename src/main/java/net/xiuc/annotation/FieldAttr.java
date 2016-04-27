@@ -10,15 +10,14 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Field {
+public @interface FieldAttr {
 
     /**
-     * 映射到数据库表中的字段名称
-     * 如果为空, 则取bean中字段名称的下划线格式
-     * 如果不为空, 则取值
-     * @return  返回映射到数据库表中的字段名称
+     * 是否是主体对象
+     * 主对象才设置为true, 每一个bean中只有一个主对象
+     * @return  返回结果
      */
-    String field() default "";
+    boolean main() default false;
 
     /**
      * 这个字段映射到哪一个数据库shema
@@ -37,11 +36,12 @@ public @interface Field {
     String table() default "";
 
     /**
-     * 是否是主体对象
-     * 主对象才设置为true, 每一个bean中只有一个主对象
-     * @return  返回结果
+     * 映射到数据库表中的字段名称
+     * 如果为空, 则取bean中字段名称的下划线格式
+     * 如果不为空, 则取值
+     * @return  返回映射到数据库表中的字段名称
      */
-    boolean main() default false;
+    String field() default "";
 
     /**
      * 辅助对象与主对象关联的字段

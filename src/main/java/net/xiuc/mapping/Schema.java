@@ -19,8 +19,14 @@ public class Schema {
      */
     private List<Table> tableList;
 
-    public Schema(String name){
-        this.name = name;
+    public Schema(){
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

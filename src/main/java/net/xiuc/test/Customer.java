@@ -1,7 +1,7 @@
 package net.xiuc.test;
 
 import lombok.Data;
-import net.xiuc.annotation.Field;
+import net.xiuc.annotation.FieldAttr;
 
 /**
  * 测试注解
@@ -10,13 +10,13 @@ import net.xiuc.annotation.Field;
 @Data
 public class Customer {
 
-    @Field(schema = "saint", table = "saint_customer", main = true)
+    @FieldAttr(schema = "saint", table = "saint_customer", main = true)
     private String id;
 
-    @Field
+    @FieldAttr
     private String companyName;
 
-    @Field(schema = "saint", table = "saint_contacts", foreign = "customer_id")
+    @FieldAttr(schema = "saint", table = "saint_contacts", foreign = "customer_id")
     private String contactsName;
 
 }

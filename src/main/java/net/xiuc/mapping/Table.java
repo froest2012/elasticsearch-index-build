@@ -18,7 +18,44 @@ public class Table {
      */
     private List<String> columnList;
 
-    public Table(String name){
+    private Table(String name, List<String> columnList){
         this.name = name;
+        this.columnList = columnList;
+    }
+
+    public static TableBuilder buildTable(String tableName){
+        return new TableBuilder(tableName);
+    }
+
+    public static class TableBuilder {
+
+        private String name;
+
+        private List<String> columList;
+
+        public TableBuilder(String tableName){
+            this.name = tableName;
+        }
+
+        public TableBuilder add(List<String> columList){
+            this.columList.addAll(columList);
+            return this;
+        }
+
+        public TableBuilder add(String column){
+            this.columList.add(column);
+            return this;
+        }
+
+        public TableBuilder add(String... columns){
+            for(String column : columns){
+                this.columList.add(column);
+            }
+            return this;
+        }
+
+        public Table create(){
+            return new Table(this.name, this.columList);
+        }
     }
 }
