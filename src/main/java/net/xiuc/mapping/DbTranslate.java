@@ -3,6 +3,7 @@ package net.xiuc.mapping;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.xiuc.annotation.FieldAttr;
+import net.xiuc.annotation.TableAttr;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.common.Strings;
 
@@ -37,13 +38,14 @@ public class DbTranslate implements Translate {
         Field[] fields = clazz.getDeclaredFields();
         Map<String, Table.TableBuilder> tableBuilderMap = new HashMap<String, Table.TableBuilder>();
         for(Field field : fields){
-            FieldAttr annotation = field.getAnnotation(FieldAttr.class);
-            boolean main = annotation.main();
-            String schemaName = annotation.schema();
-            String tableName = annotation.table();
-            String fieldName = annotation.field();
-            String foreign = annotation.foreign();
-            String valid = annotation.valid();
+            FieldAttr fieldAnnotation = field.getAnnotation(FieldAttr.class);
+            TableAttr tableAnnotation = field.getAnnotation(TableAttr.class);
+            boolean main = fieldAnnotation.main();
+            String schemaName = tableAnnotation.schema();
+            String tableName = fieldAnnotation.table();
+            String fieldName = fieldAnnotation.field();
+            String foreign = tableAnnotation.foreign();
+            String valid = tableAnnotation.valid();
             String key = "";
             Table.TableBuilder tableBuilder = null;
             String tableBuilderKey = schemaName + "." +tableName;
