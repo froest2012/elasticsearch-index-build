@@ -2,6 +2,7 @@ package net.xiuc;
 
 import net.xiuc.mapping.DbTranslate;
 import net.xiuc.mapping.Translate;
+import net.xiuc.test.Customer;
 
 /**
  * 索引构建入口
@@ -19,7 +20,9 @@ public enum IndexBuildFactory {
     public <T> void build(String indexAliasName, Class<T> clazz){
         //解析clazz, 分析出主从关系以及数据库关系
         Translate translate = new DbTranslate();
+        translate.translate(Customer.class);
         //从数据库获取数据并建成doc
+
         //setting设置
         //创建索引并设置别名
 

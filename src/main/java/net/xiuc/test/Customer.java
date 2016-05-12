@@ -19,11 +19,10 @@ public class Customer implements Common {
     @FieldAttr
     private String companyName;
 
-    @TableAttr(schema = "saint", foreign = "customer_id", valid = "is_deleted = 'N'")
+    @TableAttr(foreign = "customer_id", valid = "is_deleted = 'N'")
     @FieldAttr(table = "saint_contacts")
     private String contactsName;
 
-    @TableAttr(schema = "saint")
     @FieldAttr(table = "saint_contacts")
     private String contactsMobile;
 

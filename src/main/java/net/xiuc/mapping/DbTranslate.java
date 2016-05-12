@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.xiuc.annotation.FieldAttr;
 import net.xiuc.annotation.TableAttr;
+import net.xiuc.util.Tools;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.common.Strings;
 
@@ -25,6 +26,7 @@ public class DbTranslate implements Translate {
 
     private Map<String, String> sqlMap = Maps.newHashMap();
 
+    private static final Tools tools = Tools.INSTANCE;
     /**
      * 主索引对应的表
      */
@@ -41,13 +43,25 @@ public class DbTranslate implements Translate {
             FieldAttr fieldAnnotation = field.getAnnotation(FieldAttr.class);
             TableAttr tableAnnotation = field.getAnnotation(TableAttr.class);
             boolean main = fieldAnnotation.main();
-            String schemaName = tableAnnotation.schema();
+            String schemaName = "";
+            String foreign = "";
+            String valid = "";
             String tableName = fieldAnnotation.table();
-            String fieldName = fieldAnnotation.field();
-            String foreign = tableAnnotation.foreign();
-            String valid = tableAnnotation.valid();
-            String key = "";
-            Table.TableBuilder tableBuilder = null;
+            String fieldName = tools.toUnderScoreCase(fieldAnnotation.field(), field.getName());
+            if(main){
+                schemaName = tableAnnotation.schema();
+                this.schema.setName(schemaName);
+                this.tableName = tableName;
+            } else if(tableAnnotation != null) {
+                schemaName = getSchemaName(tableAnnotation.schema());
+                foreign = tableAnnotation.foreign();
+                valid = tableAnnotation.valid();
+            } else {
+                schemaName = this.schema.getName();
+            }
+            tableName = getTableName(tableName);
+
+            Table.TableBuilder tableBuilder;
             String tableBuilderKey = schemaName + "." +tableName;
             if(StringUtils.isEmpty(schemaName)
                     && StringUtils.isEmpty(tableName)){
@@ -57,15 +71,7 @@ public class DbTranslate implements Translate {
             if(tableBuilder == null){
                 tableBuilder = Table.buildTable(tableName);
             }
-            if(Strings.isEmpty(fieldName)){
-                fieldName = Strings.toUnderscoreCase(field.getName());
-            }
-            if(main){
-                this.schema.setName(schemaName);
-                this.tableName = tableName;
-                key = fieldName;
-                tableBuilder.setKey(key);
-            }
+
             tableBuilder.setForeign(foreign);
             tableBuilder.setValid(valid);
             tableBuilder.add(fieldName);
@@ -105,6 +111,24 @@ public class DbTranslate implements Translate {
      */
     public Map<String, String> getSqlMap() {
         return Collections.unmodifiableMap(sqlMap);
+    }
+
+    /**
+     * 如果注解中的schema字段{@link TableAttr}为空,则取主schema的值 {@link DbTranslate#schema}
+     * @param schemaName    注解中的schema字段
+     * @return
+     */
+    private String getSchemaName(String schemaName){
+        return StringUtils.isEmpty(schemaName) ? this.schema.getName() : schemaName;
+    }
+
+    /**
+     * 如果注解中的table字段{@link FieldAttr}为空,则取主table的值 {@link DbTranslate#tableName}
+     * @param tableName     注解中table字段
+     * @return
+     */
+    private String getTableName(String tableName){
+        return StringUtils.isEmpty(tableName) ? this.tableName : tableName;
     }
 
 }
