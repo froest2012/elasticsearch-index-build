@@ -1,4 +1,4 @@
-package net.xiuc.mapping;
+package net.xiuc.build;
 
 /**
  * 用于获取索引主键,每个索引对象都需要实现这个方法

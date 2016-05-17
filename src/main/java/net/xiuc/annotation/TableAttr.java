@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * 如果这个对象对应的是从索引,那么{@link TableAttr} 需要放在外键上面
  * Created by 秀川 on 16/4/29.
  */
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface TableAttr {
@@ -22,12 +22,12 @@ public @interface TableAttr {
     String schema() default "";
 
     /**
-     * 辅助对象与主对象关联的字段
-     * 如果为空,则没有关联字段,即这个就是主对象的值
-     * 如果不为空, 那么这个字段就是和主对象进行关联的
+     * 这个字段在哪个数据库表中
+     * 如果为空, 这个字段的表结构就是主体对象的table
+     * 如果不为空, 则取该值
      * @return  返回结果
      */
-    String foreign() default "";
+    String table() default "";
 
     /**
      * 用于main=true或者foreign!=""的时候

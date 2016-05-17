@@ -1,4 +1,4 @@
-package net.xiuc.mapping;
+package net.xiuc.build;
 
 import java.util.List;
 

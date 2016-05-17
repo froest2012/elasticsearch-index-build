@@ -1,4 +1,4 @@
-package net.xiuc.mapping;
+package net.xiuc.build;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -6,7 +6,6 @@ import net.xiuc.annotation.FieldAttr;
 import net.xiuc.annotation.TableAttr;
 import net.xiuc.util.Tools;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.common.Strings;
 
 import java.lang.reflect.Field;
 import java.util.Collections;
@@ -103,6 +102,15 @@ public class DbTranslate implements Translate {
             sqlMap.put(schemaName + "." + table.getName(), sb.toString());
         }
         return sqlMap;
+    }
+
+    /**
+     * 把schema对应的table的信息给外面提供出去,但是不能修改map中的信息
+     *
+     * @return
+     */
+    public Map<String, Table> getTableMap() {
+        return Collections.unmodifiableMap(tableMap);
     }
 
     /**

@@ -1,7 +1,7 @@
 package net.xiuc;
 
-import net.xiuc.mapping.DbTranslate;
-import net.xiuc.mapping.Translate;
+import net.xiuc.build.DbTranslate;
+import net.xiuc.build.Translate;
 import net.xiuc.test.Customer;
 
 /**

@@ -28,6 +28,21 @@ public @interface FieldAttr {
     String table() default "";
 
     /**
+     * 辅助对象与主对象关联的字段
+     * 如果为空,则没有关联字段,即这个就是主对象的值
+     * 如果不为空, 那么这个字段就是和主对象进行关联的
+     * @return  返回结果
+     */
+    String foreign() default "";
+
+    /**
+     * 主对象中的主键
+     * 辅助对象与主对象的关联关系,{@link TableAttr#foreign()}
+     * @return  返回结果
+     */
+    String primary() default "";
+
+    /**
      * 映射到数据库表中的字段名称
      * 如果为空, 则取bean中字段名称的下划线格式
      * 如果不为空, 则取值

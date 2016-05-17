@@ -1,9 +1,7 @@
 package net.xiuc.test;
 
 import lombok.Data;
-import net.xiuc.annotation.FieldAttr;
-import net.xiuc.annotation.TableAttr;
-import net.xiuc.mapping.Common;
+import net.xiuc.build.Common;
 
 /**
  * 测试注解
@@ -12,21 +10,8 @@ import net.xiuc.mapping.Common;
 @Data
 public class Customer implements Common {
 
-    @TableAttr(schema = "saint")
-    @FieldAttr(table = "saint_customer", main = true)
-    private String id;
-
-    @FieldAttr
-    private String companyName;
-
-    @TableAttr(foreign = "customer_id", valid = "is_deleted = 'N'")
-    @FieldAttr(table = "saint_contacts")
-    private String contactsName;
-
-    @FieldAttr(table = "saint_contacts")
-    private String contactsMobile;
 
     public String getPrimaryKey() {
-        return id;
+        return null;
     }
 }
