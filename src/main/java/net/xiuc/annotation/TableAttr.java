@@ -19,7 +19,7 @@ public @interface TableAttr {
      * 如果不为空,则取该值
      * @return  返回结果
      */
-    String schema() default "";
+    String schema();
 
     /**
      * 这个字段在哪个数据库表中
@@ -27,7 +27,7 @@ public @interface TableAttr {
      * 如果不为空, 则取该值
      * @return  返回结果
      */
-    String table() default "";
+    String table();
 
     /**
      * 用于main=true或者foreign!=""的时候

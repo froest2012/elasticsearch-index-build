@@ -20,24 +20,20 @@ public @interface FieldAttr {
     boolean main() default false;
 
     /**
-     * 这个字段在哪个数据库表中
-     * 如果为空, 这个字段的表结构就是主体对象的table
-     * 如果不为空, 则取该值
-     * @return  返回结果
-     */
-    String table() default "";
-
-    /**
      * 辅助对象与主对象关联的字段
      * 如果为空,则没有关联字段,即这个就是主对象的值
      * 如果不为空, 那么这个字段就是和主对象进行关联的
+     * 外键的字段名称要与数据库的字段保持一致,使用驼峰形式,数据库名称使用下划线,
+     * 主要是为了关联的时候可以通过get方法获取相应的值
      * @return  返回结果
      */
     String foreign() default "";
 
     /**
      * 主对象中的主键
-     * 辅助对象与主对象的关联关系,{@link TableAttr#foreign()}
+     * 辅助对象与主对象的关联关系,{@link FieldAttr#foreign()}
+     * 主键的字段名称要与数据库的字段保持一致,使用驼峰形式,数据库名称使用下划线,
+     * 主要是为了关联的时候可以通过get方法获取相应的值
      * @return  返回结果
      */
     String primary() default "";

@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
+ * 订单主索引
  * Created by 秀川 on 16/5/16.
  */
 @TableAttr(schema = "venus", table = "venus_order_info", valid = "is_deleted = 'N'")
@@ -115,7 +116,7 @@ public class Order implements Common{
 
     /*====================db_seller=====================*/
     @NestedAttr
-    @FieldAttr(table = "db_seller", foreign = "id", primary = "seller_id")
+    @FieldAttr(field = "seller", foreign = "id", primary = "seller_id")
     private Seller seller;
 
     /*====================db_order_info_openplatform=====================*/

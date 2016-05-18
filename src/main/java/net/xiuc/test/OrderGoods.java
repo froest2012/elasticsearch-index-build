@@ -2,6 +2,7 @@ package net.xiuc.test;
 
 import lombok.Data;
 import net.xiuc.annotation.FieldAttr;
+import net.xiuc.annotation.NestedAttr;
 import net.xiuc.annotation.TableAttr;
 
 import java.math.BigDecimal;
@@ -37,5 +38,7 @@ public class OrderGoods {
 
     private BigDecimal soldPriceAmount;
 
-
+    @NestedAttr
+    @FieldAttr(field = "goods_of_order", foreign = "id", primary = "goods_id")
+    private GoodsOfOrder goodsOfOrder;
 }

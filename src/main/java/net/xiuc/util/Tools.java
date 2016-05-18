@@ -13,7 +13,7 @@ public enum Tools {
         return INSTANCE;
     }
 
-    public String toUnderScoreCase(String field, String fieldName) {
-        return StringUtils.isEmpty(field) ? Strings.toUnderscoreCase(fieldName) : field;
+    public String toUnderScoreCase(String annotationValue, String fieldName) {
+        return StringUtils.isEmpty(annotationValue) ? Strings.toUnderscoreCase(fieldName) : annotationValue;
     }
 }
