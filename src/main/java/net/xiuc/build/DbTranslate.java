@@ -1,7 +1,6 @@
 package net.xiuc.build;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import net.xiuc.annotation.FieldAttr;
 import net.xiuc.annotation.TableAttr;
 import net.xiuc.util.Tools;
@@ -11,10 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 解析bean对象,转换成对应的sql
@@ -23,48 +20,40 @@ import java.util.Map;
 public class DbTranslate implements Translate {
 
     private static final Logger logger = LoggerFactory.getLogger(Translate.class);
-    private Map<String, Table> tableMap = Maps.newHashMap();//key=schema.table,value=tableBuilder
-
-    private Map<String, String> sqlMap = Maps.newHashMap();
 
     private static final Tools tools = Tools.INSTANCE;
 
-    private Table.TableBuilder keyTableBuilder;
-
+    private Table mainTable;
     /**
      * 使用反射方法分析注解
      *
      * @param clazz 索引对象Class类
      * @param <T>   泛型-Class具体类
      */
-    public <T> void translate(Class<T> clazz) {
-        List<Table.TableBuilder> res = Lists.newArrayList();
+    public <T> List<Table> translate(Class<T> clazz) {
+        List<Table> res = Lists.newArrayList();
         analyzeBean(null, clazz, null, null, res);
-        System.out.println();
+        return res;
     }
 
-    private Table.TableBuilder analyzeBean(Table.TableBuilder parent, Class<?> clazz, String foreign, String primary,  List<Table.TableBuilder> res) {
+    private void analyzeBean(Table.TableBuilder parent, Class<?> clazz, String foreign, String primary, List<Table> res) {
         TableAttr tableAttr = clazz.getAnnotation(TableAttr.class);
         if (tableAttr == null) {
             logger.warn("当前对象非数据库映射对象");
-            return null;
+            return ;
         }
         String schemaName = tableAttr.schema();
         String tableName = tableAttr.table();
         String valid = tableAttr.valid();
 
         Table.TableBuilder tableBuilder = Table.buildTableBuilder(schemaName, tableName);
-        res.add(tableBuilder);
-        if (parent != null) {
-            tableBuilder.setParentBuilder(parent);
-        }
         if (!StringUtils.isEmpty(valid)) {
             tableBuilder.setValid(valid);
         }
-        if(!StringUtils.isEmpty(foreign)){
+        if (!StringUtils.isEmpty(foreign)) {
             tableBuilder.setForeign(foreign);
         }
-        if(!StringUtils.isEmpty(primary)){
+        if (!StringUtils.isEmpty(primary)) {
             tableBuilder.setPrimary(primary);
         }
         Field[] fields = clazz.getDeclaredFields();
@@ -78,16 +67,12 @@ public class DbTranslate implements Translate {
                 if (isCustomType(field)) {
                     //递归,说明是自定义对象类型
                     try {
-                        analyzeBean(tableBuilder, Class.forName(field.getType().getName()),foreignValue, primaryValue, res);
+                        analyzeBean(tableBuilder, Class.forName(field.getType().getName()), foreignValue, primaryValue, res);
                     } catch (ClassNotFoundException e) {
                         logger.error("未找到该类", e);
                     }
                 } else {
-                    boolean main = fieldAttr.main();
                     String fieldName = fieldAttr.field();
-                    if (main) {
-                        keyTableBuilder = tableBuilder;
-                    }
                     tableBuilder.add(tools.toUnderScoreCase(fieldName, field.getName()), field.getName());
                     if (!StringUtils.isEmpty(foreignValue)) {
                         tableBuilder.setForeign(foreignValue);
@@ -99,7 +84,12 @@ public class DbTranslate implements Translate {
             }
 
         }
-        return tableBuilder;
+        if (parent != null) {
+            tableBuilder.setParentBuilder(parent);
+            res.add(tableBuilder.create());//当parent=null的时候,由mainTable存储;res相当于就是从表的信息
+        }else {
+            mainTable = tableBuilder.create();
+        }
     }
 
     /**
@@ -123,27 +113,7 @@ public class DbTranslate implements Translate {
         return true;
     }
 
-    private Map<String, String> getSql(Schema schema) {
-       return null;
+    public Table getMainTable() {
+        return mainTable;
     }
-
-    /**
-     * 把schema对应的table的信息给外面提供出去,但是不能修改map中的信息
-     *
-     * @return
-     */
-    public Map<String, Table> getTableMap() {
-        return Collections.unmodifiableMap(tableMap);
-    }
-
-    /**
-     * 提供给外部, 用于创建索引
-     *
-     * @return 返回map
-     */
-    public Map<String, String> getSqlMap() {
-        return Collections.unmodifiableMap(sqlMap);
-    }
-
-
 }

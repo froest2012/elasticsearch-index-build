@@ -17,7 +17,6 @@ import java.util.Date;
 @Data
 public class Order implements Common{
 
-    @FieldAttr(main = true)
     private Long id;
 
     private String orderSn;

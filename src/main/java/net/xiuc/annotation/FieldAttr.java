@@ -5,20 +5,13 @@ import java.lang.annotation.*;
 /**
  * 字段映射注解, 可以知道每个字段映射到数据库哪个schema的哪个table中
  * 并且根据主体对象来创建索引
+ * 如果是嵌套类型的字段,必须要有 {@link FieldAttr#foreign()}, {@link FieldAttr#primary()}, 以及{@link FieldAttr#field()}
  * Created by 秀川 on 16/4/22.
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface FieldAttr {
-
-    /**
-     * 是否是主体对象
-     * 主对象才设置为true, 每一个bean中只有一个主对象
-     * @return  返回结果
-     */
-    boolean main() default false;
-
     /**
      * 辅助对象与主对象关联的字段
      * 如果为空,则没有关联字段,即这个就是主对象的值
